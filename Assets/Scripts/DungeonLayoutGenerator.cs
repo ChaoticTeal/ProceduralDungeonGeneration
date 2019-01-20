@@ -46,6 +46,14 @@ public class DungeonLayoutGenerator : MonoBehaviour
     [SerializeField]
     [Tooltip("The text box to write the dungeon ASCII layout in.")]
     Text dungeonText;
+    [SerializeField]
+    [Tooltip("Should pressing Space generate a new dungeon?")]
+    bool generateDungeonRuntime = false;
+
+    [Header("Safety Net")]
+    [SerializeField]
+    [Tooltip("The number of times to try to place a room before deciding a valid room is impossible.")]
+    int noValidRoomsThreshold = 100;
     #endregion
 
     // Private fields
@@ -57,6 +65,14 @@ public class DungeonLayoutGenerator : MonoBehaviour
     {
         GenerateNewDungeon();
 	}
+
+    private void Update()
+    {
+#if UNITY_EDITOR
+        if (Input.GetKeyDown(KeyCode.Space) && generateDungeonRuntime)
+            GenerateNewDungeon();
+#endif
+    }
 
     /// <summary>
     /// Calls dungeon generation functions in sequence
@@ -89,9 +105,9 @@ public class DungeonLayoutGenerator : MonoBehaviour
     private void InitializeDungeon()
     {
         dungeonLayout = new char[gridDimensions, gridDimensions];
-        for (int x = 0; x < gridDimensions; x++)
-            for (int z = 0; z < gridDimensions; z++)
-                dungeonLayout[x, z] = emptySpaceChar;
+        for (int z = 0; z < gridDimensions; z++)
+            for (int x = 0; x < gridDimensions; x++)
+                dungeonLayout[z, x] = emptySpaceChar;
     }
 
     /// <summary>
@@ -105,22 +121,38 @@ public class DungeonLayoutGenerator : MonoBehaviour
         // Generate at least one room
         do
         {
+            int attempts = 0;
             Room tempRoom = new Room();
             Rect tempRect = new Rect();
+            Rect tempBuffer = new Rect();
             // Make at least one attempt at generating a room Rect
             do
             {
                 roomsOverlap = false;
                 tempRect = GenerateRoomRect();
+                tempBuffer = new Rect(tempRect.min - Vector2.one, tempRect.max + Vector2.one);
                 if(rooms.Count > 0)
                 {
                     foreach (Room r in rooms)
-                        if (r.Bounds.Overlaps(tempRect))
+                        if (r.Buffer.Overlaps(tempRect) || r.Bounds.Overlaps(tempBuffer))
+                        {
                             roomsOverlap = true;
+                            attempts++;
+                        }
+                }
+                if(attempts >= noValidRoomsThreshold)
+                {
+                    keepGenerating = false;
+                    roomsOverlap = false;
+                    Debug.Log("No valid rooms found, continuing.");
                 }
             } while (rooms.Count > 0 && roomsOverlap);
-            tempRoom.Bounds = tempRect;
-            rooms.Add(tempRoom);
+            if(keepGenerating)
+            {
+                tempRoom.Bounds = tempRect;
+                tempRoom.Buffer = tempBuffer;
+                rooms.Add(tempRoom);
+            }
             if(rooms.Count < maxRoomCount)
             {
                 if (UnityEngine.Random.value < stopChance)
@@ -139,11 +171,11 @@ public class DungeonLayoutGenerator : MonoBehaviour
     {
         foreach(Room r in rooms)
         {
-            for(int x = Mathf.RoundToInt(r.Bounds.xMin); x < Mathf.RoundToInt(r.Bounds.xMax); x++)
+            for(int z = Mathf.RoundToInt(r.Bounds.xMin); z < Mathf.RoundToInt(r.Bounds.xMax); z++)
             {
-                for(int z = Mathf.RoundToInt(r.Bounds.yMin); z < Mathf.RoundToInt(r.Bounds.yMax); z++)
+                for(int x = Mathf.RoundToInt(r.Bounds.yMin); x < Mathf.RoundToInt(r.Bounds.yMax); x++)
                 {
-                    dungeonLayout[x, z] = roomChar;
+                    dungeonLayout[z, x] = roomChar;
                 }
             }
         }
@@ -174,27 +206,30 @@ public class DungeonLayoutGenerator : MonoBehaviour
             DateTime.Now.ToString().Replace("/","").Replace(":","").Replace(" ","") + ".txt";
         using (var sw = new StreamWriter(path))
         {
-            for (int x = 0; x < gridDimensions; x++)
+            for (int z = 0; z < gridDimensions; z++)
             {
-                for (int z = 0; z < gridDimensions; z++)
-                    sw.Write(dungeonLayout[x, z]);
+                for (int x = 0; x < gridDimensions; x++)
+                    sw.Write(dungeonLayout[z, x]);
                 sw.Write(sw.NewLine);
             }
         }
     }
 
+    /// <summary>
+    /// Prints dungeonLayout to a text field on the Canvas
+    /// </summary>
     private void PrintDungeonToCanvas()
     {
         if(dungeonText != null)
         {
             dungeonText.text = "";
-            for (int x = 0; x < gridDimensions; x++)
+            for (int z = 0; z < gridDimensions; z++)
             {
-                for (int z = 0; z < gridDimensions; z++)
+                for (int x = 0; x < gridDimensions; x++)
                 {
-                    if (dungeonLayout[x, z] != emptySpaceChar)
+                    if (dungeonLayout[x, x] != emptySpaceChar)
                         dungeonText.text += " ";
-                    dungeonText.text += dungeonLayout[x, z];
+                    dungeonText.text += dungeonLayout[z, x];
                 }
                 dungeonText.text += '\n';
             }
@@ -208,14 +243,19 @@ public class DungeonLayoutGenerator : MonoBehaviour
 class Room
 {
     /// <summary>
-    /// A rectangle representing the position of the room
-    /// </summary>
-    public Rect Bounds;
-    /// <summary>
     /// A list containing the coordinates of any doors in the room
     /// A valid room contains at least one
     /// </summary>
     public List<Vector2> Doors;
+    /// <summary>
+    /// A rectangle representing the position of the room
+    /// </summary>
+    public Rect Bounds;
+    /// <summary>
+    /// A rectangle representing the required gap between rooms
+    /// Should allow for at least one tile between rooms
+    /// </summary>
+    public Rect Buffer;
     /// <summary>
     /// The location of the entry tile, if there is one
     /// </summary>

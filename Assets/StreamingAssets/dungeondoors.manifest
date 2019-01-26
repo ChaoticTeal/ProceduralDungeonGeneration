@@ -1,0 +1,49 @@
+ManifestFileVersion: 0
+CRC: 4260401863
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: 6e6d5e1ce3c1ba838540eb556c9a43a9
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: 204ebaab004541ff039a8ea519c7d877
+HashAppended: 0
+ClassTypes:
+- Class: 1
+  Script: {instanceID: 0}
+- Class: 4
+  Script: {instanceID: 0}
+- Class: 21
+  Script: {instanceID: 0}
+- Class: 23
+  Script: {instanceID: 0}
+- Class: 28
+  Script: {instanceID: 0}
+- Class: 33
+  Script: {instanceID: 0}
+- Class: 48
+  Script: {instanceID: 0}
+- Class: 64
+  Script: {instanceID: 0}
+- Class: 114
+  Script: {fileID: 232430130, guid: 4f0627da958b4bb78c260446066f065f, type: 3}
+- Class: 115
+  Script: {instanceID: 0}
+Assets:
+- Assets/Prefabs/RoomTiles/Doors/ForwardWallLeftExit.prefab
+- Assets/Prefabs/RoomTiles/Doors/LeftWallBackExit.prefab
+- Assets/Prefabs/RoomTiles/Doors/OpenLeftExit.prefab
+- Assets/Prefabs/RoomTiles/Doors/RightWallForwardExit.prefab
+- Assets/Prefabs/RoomTiles/Doors/BackRightExits.prefab
+- Assets/Prefabs/RoomTiles/Doors/OpenForwardExit.prefab
+- Assets/Prefabs/RoomTiles/Doors/BackWallLeftExit.prefab
+- Assets/Prefabs/RoomTiles/Doors/ForwardRightExits.prefab
+- Assets/Prefabs/RoomTiles/Doors/BackLeftExits.prefab
+- Assets/Prefabs/RoomTiles/Doors/LeftWallForwardExit.prefab
+- Assets/Prefabs/RoomTiles/Doors/ForwardLeftExits.prefab
+- Assets/Prefabs/RoomTiles/Doors/OpenRightExit.prefab
+- Assets/Prefabs/RoomTiles/Doors/BackWallRightExit.prefab
+- Assets/Prefabs/RoomTiles/Doors/OpenBackExit.prefab
+- Assets/Prefabs/RoomTiles/Doors/ForwardWallRightExit.prefab
+- Assets/Prefabs/RoomTiles/Doors/RightWallBackExit.prefab
+Dependencies: []

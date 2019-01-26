@@ -49,6 +49,9 @@ public class DungeonLayoutGenerator : MonoBehaviour
     [SerializeField]
     [Tooltip("Should pressing Space generate a new dungeon?")]
     bool generateDungeonRuntime = false;
+    [SerializeField]
+    [Tooltip("The DungeonBuilder object to pass data to.")]
+    DungeonBuilder dungeonBuilder;
 
     [Header("Safety Net")]
     [SerializeField]
@@ -84,6 +87,8 @@ public class DungeonLayoutGenerator : MonoBehaviour
         GenerateRooms();
         PrintDungeon();
         PrintDungeonToCanvas();
+        if(dungeonBuilder != null)
+            dungeonBuilder.Initialize(emptySpaceChar, roomChar, hallChar, doorChar, exitChar, entryChar, dungeonLayout);
     }
 
     /// <summary>
@@ -227,7 +232,7 @@ public class DungeonLayoutGenerator : MonoBehaviour
             {
                 for (int x = 0; x < gridDimensions; x++)
                 {
-                    if (dungeonLayout[x, x] != emptySpaceChar)
+                    if (dungeonLayout[z, x] != emptySpaceChar)
                         dungeonText.text += " ";
                     dungeonText.text += dungeonLayout[z, x];
                 }

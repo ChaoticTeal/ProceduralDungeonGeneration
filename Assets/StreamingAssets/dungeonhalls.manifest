@@ -1,0 +1,48 @@
+ManifestFileVersion: 0
+CRC: 2151522190
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: e037c6d25bed560ad653bd98b8253470
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: 204ebaab004541ff039a8ea519c7d877
+HashAppended: 0
+ClassTypes:
+- Class: 1
+  Script: {instanceID: 0}
+- Class: 4
+  Script: {instanceID: 0}
+- Class: 21
+  Script: {instanceID: 0}
+- Class: 23
+  Script: {instanceID: 0}
+- Class: 28
+  Script: {instanceID: 0}
+- Class: 33
+  Script: {instanceID: 0}
+- Class: 48
+  Script: {instanceID: 0}
+- Class: 64
+  Script: {instanceID: 0}
+- Class: 114
+  Script: {fileID: 232430130, guid: 4f0627da958b4bb78c260446066f065f, type: 3}
+- Class: 115
+  Script: {instanceID: 0}
+Assets:
+- Assets/Prefabs/RoomTiles/Hall/HallLeftRightWalls.prefab
+- Assets/Prefabs/RoomTiles/Hall/HallRightDeadEnd.prefab
+- Assets/Prefabs/RoomTiles/Hall/HallForwardDeadEnd.prefab
+- Assets/Prefabs/RoomTiles/Hall/HallBackLeftCorner.prefab
+- Assets/Prefabs/RoomTiles/Hall/HallForwardBackWalls.prefab
+- Assets/Prefabs/RoomTiles/Hall/HallLeftDeadEnd.prefab
+- Assets/Prefabs/RoomTiles/Hall/HallForwardRightCorner.prefab
+- Assets/Prefabs/RoomTiles/Hall/HallForwardLeftCorner.prefab
+- Assets/Prefabs/RoomTiles/Hall/HallBackWallTJunction.prefab
+- Assets/Prefabs/RoomTiles/Hall/HallBackRightCorner.prefab
+- Assets/Prefabs/RoomTiles/Hall/HallForwardWallTJunction.prefab
+- Assets/Prefabs/RoomTiles/Hall/HallLeftWallTJunction.prefab
+- Assets/Prefabs/RoomTiles/Hall/HallPlusJunction.prefab
+- Assets/Prefabs/RoomTiles/Hall/HallRightWallTJunction.prefab
+- Assets/Prefabs/RoomTiles/Hall/HallBackDeadEnd.prefab
+Dependencies: []
